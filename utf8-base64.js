@@ -15,14 +15,14 @@ var B64 = {
     lookup: null,
     ie: /MSIE /.test(navigator.userAgent),
     ieo: /MSIE [67]/.test(navigator.userAgent),
-    encode: function (s) {
+    encode: function(s) {
         /* jshint bitwise:false */
         var buffer = B64.toUtf8(s),
             position = -1,
             result,
             len = buffer.length,
-            nan0, nan1, nan2, enc = [, , , ];
-        
+            nan0, nan1, nan2, enc = [, , ,];
+
         if (B64.ie) {
             result = [];
             while (++position < len) {
@@ -59,12 +59,12 @@ var B64 = {
             return result;
         }
     },
-    decode: function (s) {
+    decode: function(s) {
         /* jshint bitwise:false */
         s = s.replace(/\s/g, '');
         if (s.length % 4)
             throw new Error('InvalidLengthError: decode failed: The string to be decoded is not the correct length for a base64 encoded string.');
-        if(/[^A-Za-z0-9+\/=\s]/g.test(s))
+        if (/[^A-Za-z0-9+\/=\s]/g.test(s))
             throw new Error('InvalidCharacterError: decode failed: The string contains characters invalid in a base64 encoded string.');
 
         var buffer = B64.fromUtf8(s),
@@ -96,7 +96,7 @@ var B64 = {
             return result;
         }
     },
-    toUtf8: function (s) {
+    toUtf8: function(s) {
         /* jshint bitwise:false */
         var position = -1,
             len = s.length,
@@ -114,11 +114,11 @@ var B64 = {
         }
         return buffer;
     },
-    fromUtf8: function (s) {
+    fromUtf8: function(s) {
         /* jshint bitwise:false */
         var position = -1,
             len, buffer = [],
-            enc = [, , , ];
+            enc = [, , ,];
         if (!B64.lookup) {
             len = B64.alphabet.length;
             B64.lookup = {};
@@ -153,11 +153,11 @@ var B64url = {
 
         // Pad out with standard base64 required padding characters
         var pad = input.length % 4;
-        if(pad) {
-          if(pad === 1) {
-            throw new Error('InvalidLengthError: Input base64url string is the wrong length to determine padding');
-          }
-          input += new Array(5-pad).join('=');
+        if (pad) {
+            if (pad === 1) {
+                throw new Error('InvalidLengthError: Input base64url string is the wrong length to determine padding');
+            }
+            input += new Array(5 - pad).join('=');
         }
 
         return B64.decode(input);
