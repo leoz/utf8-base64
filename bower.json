@@ -1,7 +1,7 @@
 {
     "name": "utf8-base64",
     "main": "utf8-base64.js",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "homepage": "http://10.0.1.100:10080/leoz/utf8-base64",
     "authors": [
         "Vassilis Petroulias [DRDigit]",
