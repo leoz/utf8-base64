@@ -143,7 +143,7 @@
         }
     };
 
-    var B64url = {
+    var B64url = window.B64url = {
         decode: function(input) {
             // Replace non-url compatible chars with base64 standard chars
             input = input
@@ -171,3 +171,9 @@
         }
     };
 })();
+
+module.exports = {
+    B64: B64,
+    B64url: B64url
+};
+
