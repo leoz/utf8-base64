@@ -6,15 +6,13 @@
 * License: Apache-2.0
 */
 
-(function() {
+(function () {
     "use strict";
 
-    var B64 = window.B64 = {
+    var B64 = {
         alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
         lookup: null,
-        ie: /MSIE /.test(navigator.userAgent),
-        ieo: /MSIE [67]/.test(navigator.userAgent),
-        encode: function(s) {
+        encode: function (s) {
             /* jshint bitwise:false */
             var buffer = B64.toUtf8(s),
                 position = -1,
@@ -22,43 +20,24 @@
                 len = buffer.length,
                 nan0, nan1, nan2, enc = [, , ,];
 
-            if (B64.ie) {
-                result = [];
-                while (++position < len) {
-                    nan0 = buffer[position];
-                    nan1 = buffer[++position];
-                    enc[0] = nan0 >> 2;
-                    enc[1] = ((nan0 & 3) << 4) | (nan1 >> 4);
-                    if (isNaN(nan1))
-                        enc[2] = enc[3] = 64;
-                    else {
-                        nan2 = buffer[++position];
-                        enc[2] = ((nan1 & 15) << 2) | (nan2 >> 6);
-                        enc[3] = (isNaN(nan2)) ? 64 : nan2 & 63;
-                    }
-                    result.push(B64.alphabet.charAt(enc[0]), B64.alphabet.charAt(enc[1]), B64.alphabet.charAt(enc[2]), B64.alphabet.charAt(enc[3]));
+            result = '';
+            while (++position < len) {
+                nan0 = buffer[position];
+                nan1 = buffer[++position];
+                enc[0] = nan0 >> 2;
+                enc[1] = ((nan0 & 3) << 4) | (nan1 >> 4);
+                if (isNaN(nan1))
+                    enc[2] = enc[3] = 64;
+                else {
+                    nan2 = buffer[++position];
+                    enc[2] = ((nan1 & 15) << 2) | (nan2 >> 6);
+                    enc[3] = (isNaN(nan2)) ? 64 : nan2 & 63;
                 }
-                return result.join('');
-            } else {
-                result = '';
-                while (++position < len) {
-                    nan0 = buffer[position];
-                    nan1 = buffer[++position];
-                    enc[0] = nan0 >> 2;
-                    enc[1] = ((nan0 & 3) << 4) | (nan1 >> 4);
-                    if (isNaN(nan1))
-                        enc[2] = enc[3] = 64;
-                    else {
-                        nan2 = buffer[++position];
-                        enc[2] = ((nan1 & 15) << 2) | (nan2 >> 6);
-                        enc[3] = (isNaN(nan2)) ? 64 : nan2 & 63;
-                    }
-                    result += B64.alphabet[enc[0]] + B64.alphabet[enc[1]] + B64.alphabet[enc[2]] + B64.alphabet[enc[3]];
-                }
-                return result;
+                result += B64.alphabet[enc[0]] + B64.alphabet[enc[1]] + B64.alphabet[enc[2]] + B64.alphabet[enc[3]];
             }
+            return result;
         },
-        decode: function(s) {
+        decode: function (s) {
             /* jshint bitwise:false */
             s = s.replace(/\s/g, '');
             if (s.length % 4)
@@ -71,31 +50,18 @@
                 result,
                 len = buffer.length;
 
-            if (B64.ieo) {
-                result = [];
-                while (position < len) {
-                    if (buffer[position] < 128)
-                        result.push(String.fromCharCode(buffer[position++]));
-                    else if (buffer[position] > 191 && buffer[position] < 224)
-                        result.push(String.fromCharCode(((buffer[position++] & 31) << 6) | (buffer[position++] & 63)));
-                    else
-                        result.push(String.fromCharCode(((buffer[position++] & 15) << 12) | ((buffer[position++] & 63) << 6) | (buffer[position++] & 63)));
-                }
-                return result.join('');
-            } else {
-                result = '';
-                while (position < len) {
-                    if (buffer[position] < 128)
-                        result += String.fromCharCode(buffer[position++]);
-                    else if (buffer[position] > 191 && buffer[position] < 224)
-                        result += String.fromCharCode(((buffer[position++] & 31) << 6) | (buffer[position++] & 63));
-                    else
-                        result += String.fromCharCode(((buffer[position++] & 15) << 12) | ((buffer[position++] & 63) << 6) | (buffer[position++] & 63));
-                }
-                return result;
+            result = '';
+            while (position < len) {
+                if (buffer[position] < 128)
+                    result += String.fromCharCode(buffer[position++]);
+                else if (buffer[position] > 191 && buffer[position] < 224)
+                    result += String.fromCharCode(((buffer[position++] & 31) << 6) | (buffer[position++] & 63));
+                else
+                    result += String.fromCharCode(((buffer[position++] & 15) << 12) | ((buffer[position++] & 63) << 6) | (buffer[position++] & 63));
             }
+            return result;
         },
-        toUtf8: function(s) {
+        toUtf8: function (s) {
             /* jshint bitwise:false */
             var position = -1,
                 len = s.length,
@@ -113,7 +79,7 @@
             }
             return buffer;
         },
-        fromUtf8: function(s) {
+        fromUtf8: function (s) {
             /* jshint bitwise:false */
             var position = -1,
                 len, buffer = [],
@@ -143,8 +109,8 @@
         }
     };
 
-    var B64url = window.B64url = {
-        decode: function(input) {
+    var B64url = {
+        decode: function (input) {
             // Replace non-url compatible chars with base64 standard chars
             input = input
                 .replace(/-/g, '+')
@@ -162,7 +128,7 @@
             return B64.decode(input);
         },
 
-        encode: function(input) {
+        encode: function (input) {
             var output = B64.encode(input);
             return output
                 .replace(/\+/g, '-')
