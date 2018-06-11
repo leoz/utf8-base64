@@ -1,6 +1,6 @@
 {
     "name": "utf8-base64",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "UTF-8 and Base64 and Base64url Javascript Encoding",
     "main": "utf8-base64.js",
     "scripts": {
@@ -8,7 +8,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "ssh://git@10.0.1.100:10022/leoz/utf8-base64.git"
+        "url": "ssh://git@192.168.50.50:10022/leoz/utf8-base64.git"
     },
     "keywords": [
         "UTF-8",
